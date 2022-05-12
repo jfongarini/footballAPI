@@ -1,5 +1,6 @@
 package com.footballAPI.controller;
 
+import com.footballAPI.model.Ranking;
 import com.footballAPI.model.Team;
 import com.footballAPI.service.ITeamStatService;
 import com.footballAPI.utils.Enums;
@@ -14,9 +15,15 @@ public class TeamStatController {
     @Autowired
     ITeamStatService iTeamStatService;
 
-    @GetMapping("/ts")
-    public Team team(@RequestParam(value = "country") Enums.Country country){
+    @GetMapping("/team")
+    public Team team(@RequestParam(value = "id") Enums.Country country){
         Team team = iTeamStatService.getTeam(country);
+        return team;
+    }
+
+    @GetMapping("/rank")
+    public Ranking ranking(@RequestParam(value = "id") Enums.Ranking ranking){
+        Ranking team = iTeamStatService.getRanking(ranking);
         return team;
     }
 }

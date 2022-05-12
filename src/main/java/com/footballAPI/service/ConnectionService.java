@@ -21,7 +21,7 @@ public class ConnectionService {
         return doc;
     }
 
-    public Document getFifa(String URL, Enums.Country country){
+    public Document getFifa(String URL, Enums.Ranking country){
 
         Document doc = null;
         try {

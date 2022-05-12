@@ -2,6 +2,7 @@ package com.footballAPI.service;
 
 import com.footballAPI.model.Match;
 import com.footballAPI.model.Player;
+import com.footballAPI.model.Ranking;
 import com.footballAPI.model.Team;
 import com.footballAPI.utils.Enums;
 import org.jsoup.nodes.Document;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +33,6 @@ public class TeamStatServiceImpl implements ITeamStatService{
         Team team = new Team();
 
         Document docData = connectionService.getData(URL_TEAM,country);
-        Document docFifa = connectionService.getFifa(URL_FIFA,country);
 
         Elements divTeamData = docData.select("div.col-sm.act_comp_wrapper.teamInfo");
         String name = divTeamData.select("div.teamnav_teamname").text();
@@ -43,16 +42,7 @@ public class TeamStatServiceImpl implements ITeamStatService{
         Elements tablesMatches = divMatches.select("table.blocks");
         team.setMatchList(getMatches(tablesMatches));
 
-        Elements trRank = docFifa.select("tr.fc-ranking-item_rankingTableRow__3MsQs.fc-ranking-item_activeRankingTableRow__g7Sa6 td");
-        Element tdRank = trRank.get(0);
-        team.setRankingPos(tdRank.text());
 
-        Element tdImageDiv = trRank.get(1);
-        Elements tdImage = tdImageDiv.select("img");
-        team.setImage(tdImage.attr("src"));
-
-        Element tdPoints = trRank.get(2);
-        team.setRankingPoints(tdPoints.select("span").text());
 
         return team;
     }
@@ -93,5 +83,27 @@ public class TeamStatServiceImpl implements ITeamStatService{
             playerList.add(player);
         }
         return playerList;
+    }
+
+
+    @Override
+    public Ranking getRanking(Enums.Ranking country) {
+
+        Ranking ranking = new Ranking();
+        Document docFifa = connectionService.getFifa(URL_FIFA,country);
+
+        ranking.setName(country.getName());
+
+        Elements trRank = docFifa.select("tr.fc-ranking-item_rankingTableRow__3MsQs.fc-ranking-item_activeRankingTableRow__g7Sa6 td");
+        Element tdRank = trRank.get(0);
+        ranking.setRankingPos(tdRank.text());
+
+        Element tdImageDiv = trRank.get(1);
+        Elements tdImage = tdImageDiv.select("img");
+        ranking.setImage(tdImage.attr("src"));
+
+        Element tdPoints = trRank.get(2);
+        ranking.setRankingPoints(tdPoints.select("span").text());
+        return ranking;
     }
 }
