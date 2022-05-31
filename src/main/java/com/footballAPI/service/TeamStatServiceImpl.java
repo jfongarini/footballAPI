@@ -34,12 +34,12 @@ public class TeamStatServiceImpl implements ITeamStatService{
 
         Document docData = connectionService.getData(URL_TEAM,country);
 
-        Elements divTeamData = docData.select("div.col-sm.act_comp_wrapper.teamInfo");
-        String name = divTeamData.select("div.teamnav_teamname").text();
+        //Elements divTeamData = docData.select("div.heading__title");
+        String name = docData.select("h1[class*=ClubhouseHeader__Name]").text().trim().replaceAll("\\s+","");
         team.setName(name);
 
-        Elements divMatches = docData.select("div.compgrp");
-        Elements tablesMatches = divMatches.select("table.blocks");
+        Elements divMatches = docData.select("div.ResponsiveTable.Table__results");
+        Elements tablesMatches = divMatches.select("table.Table");
         team.setMatchList(getMatches(tablesMatches));
 
 
@@ -50,25 +50,26 @@ public class TeamStatServiceImpl implements ITeamStatService{
     public List<Match> getMatches(Elements tablesMatches){
         List<Match> matchList = new ArrayList<>();
         String urlGoals;
-        for (Element table: tablesMatches.select("tr")) {
-            if (table.select("td.acron").text().equals("WC")) {
-                Match match = new Match();
-                match.setDate(table.select("span.kick_t_dt").text());
-                //date biggest at 2019
-                if (Integer.parseInt(match.getDate().split("\\.")[2]) > 19){
-                    match.setHome(table.select("td.home_o").text());
-                    match.setAway(table.select("td.away_o").text());
-                    match.setResult(table.select("td.score").text());
-                    urlGoals = table.select("td.score a").first().absUrl("href");
-                    Document docData = connectionService.getGoals(urlGoals);
-                    Elements tableGoalsHome = docData.select("table.sp-scorerlist__wrapper.spm-is-left");
-                    Elements tablesGoalsAway = docData.select("table.sp-scorerlist__wrapper.spm-is-right");
-                    match.setGoalsHome(getGoals(tableGoalsHome));
-                    match.setGoalsAway(getGoals(tablesGoalsAway));
-                    matchList.add(match);
-                }
+        for (Element table: tablesMatches.select("tr.Table__TR.Table__TR--sm.Table__even")) {
+            Match match = new Match();
+            match.setDate(table.select("div.matchTeams").text());
+            match.setHome(table.select("div[class*=local] a").text().replaceAll("\\s+",""));
+            match.setAway(table.select("div[class*=away] a").text().replaceAll("\\s+",""));
+            String result = table.select("span[class*=Table__Team] a").get(1).text();
+            String[] resSplit = result.split("-");
+            match.setResultHome(resSplit[0].trim());
+            match.setResultAway(resSplit[1].trim());
+            urlGoals = table.select("span[class*=Table__Team] a").get(1).absUrl("href");
+            Document docData = connectionService.getGoals(urlGoals);
+            Elements tableGoalsHomePrev = docData.select("div.team.away");
+            Elements tableGoalsHome = tableGoalsHomePrev.select("ul[class*=goal]");
+            Elements tablesGoalsAwayPrev = docData.select("div.team.home");
+            Elements tablesGoalsAway = tablesGoalsAwayPrev.select("ul[class*=goal]");
+            match.setGoalsHome(getGoals(tableGoalsHome));
+            match.setGoalsAway(getGoals(tablesGoalsAway));
+            matchList.add(match);
 
-            }
+
         }
 
         return matchList;
@@ -76,11 +77,19 @@ public class TeamStatServiceImpl implements ITeamStatService{
 
     public List<Player> getGoals(Elements tableGoals){
         List<Player> playerList = new ArrayList<>();
-        for (Element row: tableGoals.select("tr.sp-scorerlist__line")) {
-            Player player = new Player();
-            player.setTime(row.select("td.sp-scorerlist__time").text());
-            player.setName(row.select("td.sp-scorerlist__scorer").text());
-            playerList.add(player);
+        for (Element row: tableGoals.select("li")) {
+            String playerStr = row.select("li").text()
+                    .replaceAll("\\)","")
+                    .replaceAll("'","")
+                    .replaceAll("PEN","");
+            String[] playerSplit = playerStr.split("\\(");
+            String[] timeSplit = playerSplit[1].split(",");
+            for (String time: timeSplit){
+                Player player = new Player();
+                player.setName(playerSplit[0].trim());
+                player.setTime(time.trim());
+                playerList.add(player);
+            }
         }
         return playerList;
     }
@@ -92,9 +101,9 @@ public class TeamStatServiceImpl implements ITeamStatService{
         Ranking ranking = new Ranking();
         Document docFifa = connectionService.getFifa(URL_FIFA,country);
 
-        ranking.setName(country.getName());
+        ranking.setName(country.getName().replaceAll("\\s+",""));
 
-        Elements trRank = docFifa.select("tr.fc-ranking-item_rankingTableRow__3MsQs.fc-ranking-item_activeRankingTableRow__g7Sa6 td");
+        Elements trRank = docFifa.select("tr[class*=fc-ranking-item_activeRankingTableRow] td");
         Element tdRank = trRank.get(0);
         ranking.setRankingPos(tdRank.text());
 

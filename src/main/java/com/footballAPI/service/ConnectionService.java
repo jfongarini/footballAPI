@@ -12,7 +12,7 @@ public class ConnectionService {
 
         Document doc = null;
         try {
-            String params = country.getRegion()+"/teams/"+country.getName()+country.getCode()+"/results/";
+            String params = country.getCode()+"/league/"+country.getRegion();
             doc = Jsoup.connect(URL+params).get();
         }
         catch (Exception e){

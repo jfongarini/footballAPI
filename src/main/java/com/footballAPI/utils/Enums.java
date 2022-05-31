@@ -3,54 +3,55 @@ package com.footballAPI.utils;
 public class Enums {
     public enum Country {
 
-        ARG("argentina","conmebol","-MjYyMzk="),
-        AUS("australia","asia-afc","-MjU5NTU="),
-        BEL("belgium","uefa","-Mjc0ODI="),
-        BRA("brazil","conmebol","-MjYyNDk="),
-        CMR("cameroon","africa-caf","-MTAxNDk="),
-        CAN("canada","concacaf","-NDk2MQ="),
-        CRC("costa-rica","concacaf","-MjA0MTI="),
-        CRO("croatia","uefa","-Mjc1MTI="),
-        DEN("denmark","uefa","-Mjc1MTY="),
-        ECU("ecuador","conmebol","-MjAzMzQ="),
-        ENG("england","uefa","-Mjc1MDc="),
-        FRA("france","uefa","-Mjc0ODU="),
-        GER("germany","uefa","-Mjc1MDM="),
-        GHA("ghana","africa-caf","-MTAxMjA="),
-        IRN("iran","asia-afc","-MjYyNDM="),
-        JPN("japan","asia-afc","-MjYyNTE="),
-        MEX("mexico","concacaf","MjMyNTU="),
-        MAR("morocco","africa-caf","-MjAzNTI="),
-        NED("netherlands","uefa","-Mjc1MjQ="),
-        NZL("new-zealand","oceania","-Mjc3MjQ="),
-        PER("peru","conmebol","-MjAzMzY="),
-        POL("poland","uefa","-Mjc0Nzg="),
-        POR("portugal","uefa","-Mjc0Nzc="),
-        QAT("qatar","asia-afc","-MjAzOTA="),
-        KSA("saudi-arabia","asia-afc","-MjYyNTY="),
-        SCO("scotland","uefa","-Mjc0ODc="),
-        SEN("senegal","africa-caf","-MjAzNTU="),
-        SRB("serbia","uefa","-MjgzNDQ="),
-        KOR("south-korea","asia-afc","-Mjc3Mjc="),
-        ESP("spain","uefa","-Mjc1MTc="),
-        SUI("switzerland","uefa","-Mjg2Nw="),
-        TUN("tunisia","africa-caf","-MjAzNjA="),
-        UKR("ukraine","uefa","-Mjc0ODg="),
-        UAE("united-arab-emirates","asia-afc","-MjAzOTg="),
-        USA("usa","concacaf","-MjcwNDk="),
-        URU("uruguay","conmebol","-MjAzMzc="),
-        WAL("wales","uefa","-Mjc1MDE=");
+        ARG("argentina","202","FIFA.WORLDQ.CONMEBOL"),
+        AUS("australia","628","FIFA.WORLDQ.AFC"),
+        BEL("belgium","459","FIFA.WORLDQ.UEFA"),
+        BRA("brazil","205","FIFA.WORLDQ.CONMEBOL"),
+        CMR("cameroon","656","FIFA.WORLDQ.CAF"),
+        CAN("canada","206","FIFA.WORLDQ.CONCACAF"),
+        CRC("costa-rica","214","FIFA.WORLDQ.CONCACAF"),
+        CRO("croatia","477","FIFA.WORLDQ.UEFA"),
+        DEN("denmark","479","FIFA.WORLDQ.UEFA"),
+        ECU("ecuador","209","FIFA.WORLDQ.CONMEBOL"),
+        ENG("england","448","FIFA.WORLDQ.UEFA"),
+        FRA("france","478","FIFA.WORLDQ.UEFA"),
+        GER("germany","481","FIFA.WORLDQ.UEFA"),
+        GHA("ghana","4469","FIFA.WORLDQ.CAF"),
+        IRN("iran","469","FIFA.WORLDQ.AFC"),
+        JPN("japan","627","FIFA.WORLDQ.AFC"),
+        MEX("mexico","203","FIFA.WORLDQ.CONCACAF"),
+        MAR("morocco","2869","FIFA.WORLDQ.CAF"),
+        NED("netherlands","449","FIFA.WORLDQ.UEFA"),
+        NZL("new-zealand","2666","FIFA.WORLDQ.OFC"),
+        PER("peru","211","FIFA.WORLDQ.CONMEBOL"),
+        POL("poland","471","FIFA.WORLDQ.UEFA"),
+        POR("portugal","482","FIFA.WORLDQ.UEFA"),
+        QAT("qatar","4398","FIFA.WORLDQ.AFC"),
+        KSA("saudi-arabia","655","FIFA.WORLDQ.AFC"),
+        SCO("scotland","580","FIFA.WORLDQ.UEFA"),
+        SEN("senegal","654","FIFA.WORLDQ.CAF"),
+        SRB("serbia","6757","FIFA.WORLDQ.UEFA"),
+        KOR("south-korea","451","FIFA.WORLDQ.AFC"),
+        ESP("spain","164","FIFA.WORLDQ.UEFA"),
+        SUI("switzerland","475","FIFA.WORLDQ.UEFA"),
+        TUN("tunisia","659","FIFA.WORLDQ.CAF"),
+        UKR("ukraine","457","FIFA.WORLDQ.UEFA"),
+        UAE("united-arab-emirates","4397","FIFA.WORLDQ.AFC"),
+        USA("united-states","660","FIFA.WORLDQ.CONCACAF"),
+        URU("uruguay","212","FIFA.WORLDQ.CONMEBOL"),
+        WAL("wales","578","FIFA.WORLDQ.UEFA");
 
         private String name;
-        private String region;
         private String code;
+        private String region;
 
 
-        Country(String name, String region, String code){
+        Country(String name, String code, String region) {
             this.name = name;
-            this.region = region;
             this.code = code;
+            this.region = region;
         }
+
 
         public String getName() {
             return name;
